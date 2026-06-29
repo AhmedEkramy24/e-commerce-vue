@@ -3,3 +3,7 @@
 .active {
   @apply text-green-500;
 }
+
+body {
+  overflow: hidden;
+}
