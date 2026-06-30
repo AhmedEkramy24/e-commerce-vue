@@ -6,7 +6,7 @@ import WishList from "../components/WishList/WishList.vue";
 import Categories from "../components/Categories/Categories.vue";
 import Brands from "../components/Brands/Brands.vue";
 import Products from "../components/Products/Products.vue";
-import LogIn from "../components/Login/Login.vue";
+import LogIn from "../components/LogIn/LogIn.vue";
 import SignUp from "../components/SignUp/SignUp.vue";
 import NotFound from "../components/NotFound/NotFound.vue";
 
@@ -44,9 +44,9 @@ const routes = [
     component: SignUp,
   },
   {
-      path: "/:pathMatch(.*)*",
-      component: NotFound,
-    },
+    path: "/:pathMatch(.*)*",
+    component: NotFound,
+  },
 ];
 
 const router = createRouter({
