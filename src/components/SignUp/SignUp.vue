@@ -1,12 +1,14 @@
 <script setup>
 import axios from "axios";
 import { useForm } from "vee-validate";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import * as yup from "yup";
+import { useAuthStore } from "../../store/auth";
 
 const isSubmit = ref(false);
 const apiError = ref("");
 const showPass = ref(false);
+const authStore = useAuthStore();
 
 const schema = yup.object({
   name: yup.string().required("Name is required"),
@@ -44,15 +46,11 @@ const onSubmit = handleSubmit(async (values) => {
     );
     isSubmit.value = false;
     apiError.value = "";
+    authStore.setToken(data.token);
   } catch (error) {
     apiError.value = "This email has been already exits";
     isSubmit.value = false;
   }
-  const { data } = await axios.post(
-    "https://ecommerce.routemisr.com/api/v1/auth/signup",
-    values,
-  );
-  console.log(data);
 });
 
 function handlePass() {
@@ -61,7 +59,10 @@ function handlePass() {
 </script>
 
 <template lang="">
-  <form class="max-w-xl mx-auto p-5 rounded-xl space-y-4" @submit="onSubmit">
+  <form
+    class="max-w-xl mx-auto p-5 rounded-xl space-y-4"
+    @submit.prevent="onSubmit"
+  >
     <h2 class="text-2xl font-bold text-center">Create Account</h2>
     <div
       class="p-4 mb-4 text-sm text-red-700 rounded-base bg-red-100"
@@ -177,19 +178,24 @@ function handlePass() {
       </div>
     </div>
 
-    <button
-      v-if="!isSubmit"
-      type="submit"
-      class="bg-green-600 text-white p-2 rounded-lg cursor-pointer mt-2 hover:bg-green-700 duration-200 font-medium"
-    >
-      Register
-    </button>
-    <button
-      v-else
-      type="button"
-      class="bg-green-600 text-white p-2 rounded-lg cursor-pointer mt-2 hover:bg-green-700 duration-200 font-medium"
-    >
-      <i class="pi pi-spinner-dotted pi-spin text-xl"></i>
-    </button>
+    <div class="flex items-center justify-between">
+      <button
+        v-if="!isSubmit"
+        type="submit"
+        class="bg-green-600 text-white p-2 rounded-lg cursor-pointer mt-2 hover:bg-green-700 duration-200 font-medium"
+      >
+        Sign up
+      </button>
+      <button
+        v-else
+        type="button"
+        class="bg-green-600 text-white p-2 rounded-lg cursor-pointer mt-2 hover:bg-green-700 duration-200 font-medium"
+      >
+        <i class="pi pi-spinner-dotted pi-spin text-xl"></i>
+      </button>
+      <span class="underline text-green-600 font-semibold hover:text-green-700">
+        <router-link to="/login"> I'm already have an acount </router-link>
+      </span>
+    </div>
   </form>
 </template>

@@ -14,26 +14,44 @@ const routes = [
   {
     path: "/",
     component: Home,
+    meta: {
+      protected: true,
+    },
   },
   {
     path: "/cart",
     component: Cart,
+    meta: {
+      protected: true,
+    },
   },
   {
     path: "/wish-list",
     component: WishList,
+    meta: {
+      protected: true,
+    },
   },
   {
     path: "/categories",
     component: Categories,
+    meta: {
+      protected: true,
+    },
   },
   {
     path: "/brands",
     component: Brands,
+    meta: {
+      protected: true,
+    },
   },
   {
     path: "/products",
     component: Products,
+    meta: {
+      protected: true,
+    },
   },
   {
     path: "/login",
@@ -52,6 +70,13 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach((to) => {
+  const token = localStorage.getItem("token");
+  if (to.meta.protected && !token) {
+    return "/login";
+  }
 });
 
 export default router;
