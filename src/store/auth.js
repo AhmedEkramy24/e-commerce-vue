@@ -1,8 +1,9 @@
+import { jwtDecode } from "jwt-decode";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useAuthStore = defineStore("auth", () => {
-  const token = ref(localStorage.getItem("token"));
+  const token = ref(localStorage.getItem("token") || null);
 
   function setToken(newToken) {
     token.value = newToken;
@@ -11,8 +12,8 @@ export const useAuthStore = defineStore("auth", () => {
 
   function logOut() {
     token.value = "";
-    localStorage.setItem("token", "");
+    localStorage.removeItem("token");
   }
 
-  return { token, setToken, logOut };
+  return { token, logOut, setToken };
 });

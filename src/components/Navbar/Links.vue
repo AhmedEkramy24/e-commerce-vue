@@ -77,7 +77,7 @@ function handleLogOut() {
         <template v-if="authStore.token">
           <li
             class="text-red-500 hover:text-red-600 cursor-pointer"
-            @click="authStore.logOut()"
+            @click="handleLogOut"
           >
             <span> Log out <i class="pi pi-sign-out translate-0.5"></i> </span>
           </li>
@@ -134,7 +134,7 @@ function handleLogOut() {
       <template v-if="authStore.token">
         <li
           class="text-red-500 hover:text-red-600 cursor-pointer"
-          @click="authStore.logOut"
+          @click="handleLogOut"
         >
           <span> Log out <i class="pi pi-sign-out translate-0.5"></i> </span>
         </li>

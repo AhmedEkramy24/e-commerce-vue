@@ -9,6 +9,9 @@ import Products from "../components/Products/Products.vue";
 import LogIn from "../components/LogIn/LogIn.vue";
 import SignUp from "../components/SignUp/SignUp.vue";
 import NotFound from "../components/NotFound/NotFound.vue";
+import ForgetPass from "../components/ForgetPass/ForgetPass.vue";
+import ResetCode from "../components/ResetCode/ResetCode.vue";
+import ResetPass from "../components/ResetPass/ResetPass.vue";
 
 const routes = [
   {
@@ -56,6 +59,18 @@ const routes = [
   {
     path: "/login",
     component: LogIn,
+  },
+  {
+    path: "/forget-pass",
+    component: ForgetPass,
+  },
+  {
+    path: "/reset-code",
+    component: ResetCode,
+  },
+  {
+    path: "/reset-pass",
+    component: ResetPass,
   },
   {
     path: "/signup",

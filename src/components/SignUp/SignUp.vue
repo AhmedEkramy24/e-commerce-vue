@@ -4,11 +4,13 @@ import { useForm } from "vee-validate";
 import { onMounted, ref } from "vue";
 import * as yup from "yup";
 import { useAuthStore } from "../../store/auth";
+import { useRouter } from "vue-router";
 
 const isSubmit = ref(false);
 const apiError = ref("");
 const showPass = ref(false);
 const authStore = useAuthStore();
+const router = useRouter();
 
 const schema = yup.object({
   name: yup.string().required("Name is required"),
@@ -47,6 +49,11 @@ const onSubmit = handleSubmit(async (values) => {
     isSubmit.value = false;
     apiError.value = "";
     authStore.setToken(data.token);
+    toast.success(`Welcome ${data.user.name}`, {
+      timeout: 2000,
+      position: "top-center",
+    });
+    router.push("/");
   } catch (error) {
     apiError.value = "This email has been already exits";
     isSubmit.value = false;
