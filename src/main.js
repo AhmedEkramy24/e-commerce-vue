@@ -6,6 +6,9 @@ import "primeicons/primeicons.css";
 import { createPinia } from "pinia";
 import Toast from "vue-toastification";
 import "vue-toastification/dist/index.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const app = createApp(App);
 app.use(router);

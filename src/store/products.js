@@ -1,12 +1,10 @@
 import axios from "axios";
 import { defineStore } from "pinia";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 
 export const useProductsStore = defineStore("products", () => {
   const products = ref([]);
-  onMounted(() => {
-    getProducts();
-  });
+
   async function getProducts() {
     try {
       const { data } = await axios.get(

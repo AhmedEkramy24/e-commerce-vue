@@ -12,6 +12,12 @@ import NotFound from "../components/NotFound/NotFound.vue";
 import ForgetPass from "../components/ForgetPass/ForgetPass.vue";
 import ResetCode from "../components/ResetCode/ResetCode.vue";
 import ResetPass from "../components/ResetPass/ResetPass.vue";
+import SpecificProduct from "../components/SpecificProduct/SpecificProduct.vue";
+import Payment from "../components/Payment/Payment.vue";
+import CashOrder from "../components/Payment/CashOrder.vue";
+import Checkout from "../components/Payment/Checkout.vue";
+import AllOrders from "../components/AllOrders/AllOrders.vue";
+import SpecificOrder from "../components/AllOrders/SpecificOrder.vue";
 
 const routes = [
   {
@@ -57,6 +63,51 @@ const routes = [
     },
   },
   {
+    path: "/checkout",
+    component: Payment,
+    meta: {
+      protected: true,
+    },
+  },
+  {
+    path: "/checkout/cash",
+    component: CashOrder,
+    meta: {
+      protected: true,
+    },
+  },
+  {
+    path: "/checkout/online",
+    component: Checkout,
+    meta: {
+      protected: true,
+    },
+  },
+  {
+    path: "/products/:id",
+    component: SpecificProduct,
+    name: "product-details",
+    meta: {
+      protected: true,
+    },
+  },
+  {
+    path: "/allorders",
+    component: AllOrders,
+
+    meta: {
+      protected: true,
+    },
+  },
+  {
+    path: "/allorders/:id",
+    component: SpecificOrder,
+
+    meta: {
+      protected: true,
+    },
+  },
+  {
     path: "/login",
     component: LogIn,
   },
@@ -85,6 +136,12 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior() {
+    return {
+      top: 0,
+      behavior: "smooth",
+    };
+  },
 });
 
 router.beforeEach((to) => {

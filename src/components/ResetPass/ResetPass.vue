@@ -33,9 +33,6 @@ function handleResetPass(data) {
   isSubmit.value = false;
   apiError.value = "";
   authStore.setToken(data.token);
-  //   authStore.setUser(data.user);
-  console.log(data);
-
   toast.success(`Welcom back`, {
     timeout: 2000,
     position: "top-center",

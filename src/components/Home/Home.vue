@@ -1,20 +1,15 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useProductsStore } from "../../store/products";
-import Product from "./Product.vue";
+import RecntProducts from "../RecntProducts/RecntProducts.vue";
+import CategoriesSlider from "./CategoriesSlider.vue";
+import Banner from "./Banner.vue";
 
 const productsStore = useProductsStore();
 const { products } = storeToRefs(productsStore);
 </script>
 <template>
-  <div class="flex flex-wrap">
-    <Product
-      v-for="product in products"
-      :img="product?.images[0]"
-      :title="product.title"
-      :category="product.category.name"
-      :price="product.price"
-      :rate="product.ratingsAverage"
-    />
-  </div>
+  <Banner />
+  <CategoriesSlider />
+  <RecntProducts :products="products" />
 </template>

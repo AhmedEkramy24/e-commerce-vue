@@ -7,8 +7,9 @@ const props = defineProps({
 <template>
   <button
     @click="props.handleMenuOpen()"
-    class="hover:text-green-500 duration-300 text-2xl cursor-pointer block md:hidden"
+    class="md:hidden flex items-center justify-center w-11 h-11 rounded-xl border border-slate-200 bg-white shadow-sm hover:bg-green-50 hover:border-green-500 hover:text-green-600 transition duration-300 cursor-pointer"
+    aria-label="Open Menu"
   >
-    <i class="pi pi-align-justify"></i>
+    <i class="pi pi-bars text-xl"></i>
   </button>
 </template>

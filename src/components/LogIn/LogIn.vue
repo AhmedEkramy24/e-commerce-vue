@@ -6,11 +6,15 @@ import * as yup from "yup";
 import { useAuthStore } from "../../store/auth";
 import { useRouter } from "vue-router";
 import { useToast } from "vue-toastification";
+import { useWishListStore } from "../../store/wishListStore";
+import { useCartStore } from "../../store/cart";
 
 const isSubmit = ref(false);
 const apiError = ref("");
 const showPass = ref(false);
 const authStore = useAuthStore();
+const wishListStore = useWishListStore();
+const cartStore = useCartStore();
 const router = useRouter();
 const toast = useToast();
 
@@ -29,7 +33,7 @@ const { errors, handleSubmit, defineField } = useForm({
 const [email] = defineField("email");
 const [password] = defineField("password");
 
-function handleLogin(data) {
+async function handleLogin(data) {
   isSubmit.value = false;
   apiError.value = "";
   authStore.setToken(data.token);
@@ -37,6 +41,8 @@ function handleLogin(data) {
     timeout: 2000,
     position: "top-center",
   });
+  await wishListStore.getWishList();
+  await cartStore.getCart();
   router.push("/");
 }
 
