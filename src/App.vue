@@ -8,6 +8,7 @@ import { useAuthStore } from "./store/auth.js";
 import { useWishListStore } from "./store/wishListStore.js";
 import { useCartStore } from "./store/cart.js";
 import { useOrdersStore } from "./store/orders.js";
+import Footer from "./components/Footer/Footer.vue";
 
 const productsStore = useProductsStore();
 const brandsStore = useBrandssStore();
@@ -31,7 +32,8 @@ onMounted(() => {
 
 <template>
   <Navbar />
-  <div class="container mx-auto pt-14">
+  <div class="container mx-auto pt-22 min-h-screen">
     <router-view />
   </div>
+  <Footer />
 </template>

@@ -3,6 +3,7 @@ import { useAuthStore } from "../../store/auth.js";
 import { useRouter } from "vue-router";
 import WishListIcon from "./WishListIcon.vue";
 import CartIcon from "./CartIcon.vue";
+import SettingsIcon from "./SettingsIcon.vue";
 
 const links = {
   mainLinks: [
@@ -55,6 +56,7 @@ function handleLogOut() {
         <template v-if="authStore.token">
           <li>
             <div class="flex items-center gap-4">
+              <SettingsIcon />
               <CartIcon />
               <WishListIcon />
             </div>

@@ -18,6 +18,9 @@ import CashOrder from "../components/Payment/CashOrder.vue";
 import Checkout from "../components/Payment/Checkout.vue";
 import AllOrders from "../components/AllOrders/AllOrders.vue";
 import SpecificOrder from "../components/AllOrders/SpecificOrder.vue";
+import Settings from "../components/Settings/Settings.vue";
+import ChangePassword from "../components/ChangePassword/ChangePassword.vue";
+import Profile from "../components/Profile/Profile.vue";
 
 const routes = [
   {
@@ -65,6 +68,27 @@ const routes = [
   {
     path: "/checkout",
     component: Payment,
+    meta: {
+      protected: true,
+    },
+  },
+  {
+    path: "/settings",
+    component: Settings,
+    meta: {
+      protected: true,
+    },
+  },
+  {
+    path: "/change-password",
+    component: ChangePassword,
+    meta: {
+      protected: true,
+    },
+  },
+  {
+    path: "/profile",
+    component: Profile,
     meta: {
       protected: true,
     },

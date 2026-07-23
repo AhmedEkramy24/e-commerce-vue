@@ -5,8 +5,6 @@ import { onMounted, ref } from "vue";
 import * as yup from "yup";
 import { useAuthStore } from "../../store/auth";
 import { useRouter } from "vue-router";
-import { useWishListStore } from "../../store/wishListStore";
-import { useCartStore } from "../../store/cart";
 import { useToast } from "vue-toastification";
 
 const isSubmit = ref(false);
@@ -14,13 +12,14 @@ const apiError = ref("");
 const showPass = ref(false);
 const authStore = useAuthStore();
 const router = useRouter();
-const wishListStore = useWishListStore();
-const cartStore = useCartStore();
 const toast = useToast();
 
 const schema = yup.object({
-  name: yup.string().required("Name is required"),
-  email: yup.string().required("Email is required").email("Invalid email"),
+  currentPassword: yup
+    .string()
+    .required("Password is required")
+    .min(8, "Minimum 8 characters"),
+
   password: yup
     .string()
     .required("Password is required")
@@ -29,42 +28,38 @@ const schema = yup.object({
     .string()
     .required("Confirm your password")
     .oneOf([yup.ref("password")], "Passwords do not match"),
-  phone: yup
-    .string()
-    .required("Phone is required")
-    .matches(/^01[0125][0-9]{8}$/, "Invalid Egyptian phone number"),
 });
 
 const { errors, handleSubmit, defineField } = useForm({
   validationSchema: schema,
 });
 
-const [name] = defineField("name");
-const [email] = defineField("email");
+const [currentPassword] = defineField("currentPassword");
 const [password] = defineField("password");
 const [rePassword] = defineField("rePassword");
-const [phone] = defineField("phone");
 
 const onSubmit = handleSubmit(async (values) => {
   isSubmit.value = true;
   try {
-    const { data } = await axios.post(
-      "https://ecommerce.routemisr.com/api/v1/auth/signup",
+    const { data } = await axios.put(
+      "https://ecommerce.routemisr.com/api/v1/users/changeMyPassword",
       values,
+      {
+        headers: {
+          token: authStore.token,
+        },
+      },
     );
     isSubmit.value = false;
     apiError.value = "";
-    authStore.setToken(data.token);
-    toast.success(`Welcome ${data.user.name}`, {
+    toast.success(`Password is updated successfuly✅`, {
       timeout: 2000,
       position: "top-center",
     });
-    await wishListStore.getWishList();
-    await cartStore.getCart();
-    router.push("/");
+    authStore.logOut();
+    router.push("/login");
   } catch (error) {
-    apiError.value = error?.response?.data?.message;
-
+    apiError.value = error?.response?.data?.errors?.msg;
     isSubmit.value = false;
   }
 });
@@ -74,12 +69,12 @@ function handlePass() {
 }
 </script>
 
-<template lang="">
+<template>
   <form
     class="max-w-xl mx-auto p-5 rounded-xl space-y-4"
     @submit.prevent="onSubmit"
   >
-    <h2 class="text-2xl font-bold text-center">Create Account</h2>
+    <h2 class="text-2xl font-bold text-center">Update Password</h2>
     <div
       class="p-4 mb-4 text-sm text-red-700 rounded-base bg-red-100"
       role="alert"
@@ -87,49 +82,33 @@ function handlePass() {
     >
       {{ apiError }}
     </div>
-    <div>
-      <label for="name" class="block mb-1 text-sm font-medium">
-        Full Name
+    <div class="relative">
+      <label for="password" class="block mb-2 text-sm font-medium">
+        Current Password
       </label>
 
       <input
-        id="name"
-        type="text"
-        v-model="name"
-        placeholder="Enter your name "
+        id="current-pass"
+        :type="showPass ? 'text' : 'password'"
+        v-model="currentPassword"
+        placeholder="Enter your current password"
         class="w-full p-2 border border-slate-400 rounded-lg outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 duration-200"
       />
+      <span class="absolute top-9 right-3 cursor-pointer" @click="handlePass">
+        <i :class="['pi', showPass ? 'pi-eye-slash' : 'pi-eye']"></i>
+      </span>
       <div
         class="p-4 mb-4 text-sm text-red-700 rounded-base bg-red-100"
         role="alert"
-        v-if="errors.name"
+        v-if="errors.currentPassword"
       >
-        {{ errors.name }}
-      </div>
-    </div>
-
-    <div>
-      <label for="email" class="block mb-2 text-sm font-medium"> Email </label>
-
-      <input
-        id="email"
-        type="email"
-        v-model="email"
-        placeholder="Enter your email"
-        class="w-full p-2 border border-slate-400 rounded-lg outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 duration-200zs"
-      />
-      <div
-        class="p-4 mb-4 text-sm text-red-700 rounded-base bg-red-100"
-        role="alert"
-        v-if="errors.email"
-      >
-        {{ errors.email }}
+        {{ errors.currentPassword }}
       </div>
     </div>
 
     <div class="relative">
       <label for="password" class="block mb-2 text-sm font-medium">
-        Password
+        New Password
       </label>
 
       <input
@@ -175,32 +154,13 @@ function handlePass() {
       </div>
     </div>
 
-    <div>
-      <label for="phone" class="block mb-1 text-sm font-medium"> Phone </label>
-
-      <input
-        id="phone"
-        type="tel"
-        v-model="phone"
-        placeholder="Enter your phone"
-        class="w-full p-2 border border-slate-400 rounded-lg outline-none focus:border-green-500 focus:ring-2 focus:ring-green-200 duration-200"
-      />
-      <div
-        class="p-4 mb-4 text-sm text-red-700 rounded-base bg-red-100"
-        role="alert"
-        v-if="errors.phone"
-      >
-        {{ errors.phone }}
-      </div>
-    </div>
-
     <div class="flex items-center justify-between">
       <button
         v-if="!isSubmit"
         type="submit"
         class="bg-green-600 text-white p-2 rounded-lg cursor-pointer mt-2 hover:bg-green-700 duration-200 font-medium"
       >
-        Sign up
+        Submit
       </button>
       <button
         v-else
@@ -209,9 +169,6 @@ function handlePass() {
       >
         <i class="pi pi-spinner-dotted pi-spin text-xl"></i>
       </button>
-      <span class="underline text-green-600 font-semibold hover:text-green-700">
-        <router-link to="/login"> I'm already have an acount </router-link>
-      </span>
     </div>
   </form>
 </template>

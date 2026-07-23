@@ -6,6 +6,7 @@ import { ref } from "vue";
 import CartIcon from "./CartIcon.vue";
 import WishListIcon from "./WishListIcon.vue";
 import { useAuthStore } from "../../store/auth.js";
+import SettingsIcon from "./SettingsIcon.vue";
 const isOpen = ref(false);
 const authStore = useAuthStore();
 const handleMenuOpen = () => {
@@ -23,6 +24,7 @@ const handleMenuOpen = () => {
           v-if="authStore.token"
           class="md:hidden items-center space-x-2 flex"
         >
+          <SettingsIcon />
           <CartIcon />
           <WishListIcon />
         </div>
